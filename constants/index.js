@@ -591,23 +591,23 @@ export const categories = [
 
 export const adminItems = [
   {
-    label: "profile",
-    route: "profile",
+    label: "posts",
+    route: "posts",
   },
   {
-    label: "categories",
-    route: "categories",
+    label: "saved",
+    route: "saved",
   },
   {
-    label: "menu",
-    route: "menu",
+    label: "edit",
+    route: "edit",
   },
-  {
-    label: "users",
-    route: "users",
-  },
-  {
-    label: "orders",
-    route: "orders",
-  },
+  // {
+  //   label: "users",
+  //   route: "users",
+  // },
+  // {
+  //   label: "orders",
+  //   route: "orders",
+  // },
 ];

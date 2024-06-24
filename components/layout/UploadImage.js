@@ -29,7 +29,7 @@ const UploadImage = ({
 }) => {
   const handleFileChange = async (e) => {
     setDisabled(true);
-    setIsChosingImage(true);
+    // setIsChosingImage(true);
 
     const selectedFile = e.target.files[0];
     try {
@@ -41,7 +41,7 @@ const UploadImage = ({
           snapshot.ref.getDownloadURL().then((downloadUrl) => {
             console.log(downloadUrl);
             setImage(downloadUrl);
-            setIsChosingImage(false);
+            alert("image selected");
             setDisabled(false);
           });
         });
@@ -57,6 +57,7 @@ const UploadImage = ({
         console.log("no file chosen");
       }
     } catch (error) {
+      alert("an error occured, please try again");
       console.log(err);
       throw new Error(err);
     }
