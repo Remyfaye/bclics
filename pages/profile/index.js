@@ -213,7 +213,7 @@ const Profile = () => {
                 className={
                   active === item.label
                     ? "bg-primary lg:px-5 px-3 py-2 rounded-xl text-white"
-                    : "px-2 py-2 lg:px-5 rounded-xl border"
+                    : "px-2 py-2 lg:px-5 rounded-xl border text-black"
                 }
               >
                 {item.label}{" "}

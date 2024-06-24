@@ -30,7 +30,7 @@ export default function Post({
             allProducts
               ? " w-[100%] rounded-t-xl mb-4 lg:h-[145px] h-[230px]  object-cover"
               : `${
-                  profile && "mx-o h-[130px] "
+                  profile && "mx-o h-[130px] object-cover"
                 }"mx-1  w-[100%] h-[100px] md:h-[150px] rounded-lg object-cover"`
           }
           alt={title}
