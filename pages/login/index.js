@@ -1,9 +1,10 @@
-import { getProviders, signIn } from "next-auth/react";
+import { getProviders, signIn, useSession } from "next-auth/react";
 
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 // import { collection, addDoc } from "firebase/firestore";
 
@@ -35,6 +36,7 @@ export function Signin({ providers }) {
 
 const Login = () => {
   const [cookie, setCookie] = useCookies(["userId"]);
+  const session = useSession();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,8 +46,34 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [user, setUser] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    console.log(session?.data?.user);
+    setUser(session?.data?.user);
+    if (session?.status === "authenticated") {
+      setIsCreatingUser(true);
+
+      const googleAuth = async () => {
+        await fetch("/api/users/googleAuth", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user }),
+        });
+
+        // console.log(user);
+        if (user) {
+          setHasCreatedUser(true);
+        }
+      };
+
+      googleAuth();
+    }
+  }, [user, session, session?.data?.user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -133,13 +161,14 @@ const Login = () => {
           <p className="text-center mt-2 text-gray-500">
             or login with provider
           </p>
-          {/* <button
-          onClick={() => signIn("google", { callbackUrl: "/" })}
-          className="border py-3 rounded-2xl font-bold mt-2 flex items-center gap-2 justify-center"
-        >
-          Login with google
-        </button> */}
-          {/* <Signin /> */}
+          <button
+            onClick={() => signIn("google")}
+            className="border border-black py-3 rounded-2xl font-bold mt-2 flex items-center gap-2 justify-center"
+          >
+            <Image src="/google.jpg" alt="img" width={32} height={32} />
+            {/* <FcGoogle className="text-2xl" /> */}
+            Login with google
+          </button>
           <p className="text-center mt-3 text-gray-500">
             Existing account?{" "}
             <Link className="underline" href="/register">

@@ -16,6 +16,7 @@ import ChildFriendlyIcon from "@mui/icons-material/ChildFriendly";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import DownhillSkiingIcon from "@mui/icons-material/DownhillSkiing";
 import CategoryIcon from "@mui/icons-material/Category";
+import PersonIcon from "@mui/icons-material/Person";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import SidebarMenuItem from "../header/SidebarMenuItem";
@@ -28,9 +29,9 @@ import { useRouter } from "next/router";
 
 export default function Elementthree() {
   const [cookies, setCookie, removeCookie] = useCookies();
-
+  const session = useSession();
+  const googleUser = session?.data?.user;
   const router = useRouter();
-  const { data: session } = useSession();
   const cookie = new Cookies();
   const userId = cookie.get("userId");
   const [user, setUser] = useState(null);
@@ -83,19 +84,19 @@ export default function Elementthree() {
         >
           <div className="items-start mt-0   p-2   ">
             <div className=" md:inline my-5">
-              {user !== null ? (
+              {session.status === "authenticated" ? (
                 <div>
                   <a
                     href="/profile"
                     className="my-auto mb-3 mt-3 cursor-pointer "
                     // onClick={() => router.push("/profile")}
                   >
-                    HI, {user?.name || user?.email}
+                    HI, {googleUser?.name || googleUser?.email}
                   </a>
                 </div>
               ) : (
                 <a
-                  href="/login"
+                  href="/register"
                   // onClick={signIn}
                   className=" text-primary border px-4  py-2 rounded-lg hover:text-white hover:bg-primary border-primary "
                 >
@@ -117,6 +118,14 @@ export default function Elementthree() {
               onClick={() => setClick(false)}
               className="border-y-2 py-3 w-[80%] mt-10"
             >
+              {session.status === "authenticated" && (
+                <SidebarMenuItem
+                  link="services"
+                  text="My Profile"
+                  Icon={PersonIcon}
+                />
+              )}
+
               <SidebarMenuItem
                 link="services"
                 text="Services"

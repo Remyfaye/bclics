@@ -7,12 +7,21 @@ export default async function handler(req, res) {
 
     switch (req.method) {
       case "POST":
-        const { password, email } = req.body;
+        const { googleUser, password, email } = req.body;
+        console.log(googleUser);
 
         // Ensure name and email are provided
         if (!password || !email) {
           res.status(400).json({ message: "Name and email are required" });
           return;
+        }
+
+        if (googleUser) {
+          const result = await db.collection("users").insertOne(googleUser);
+
+          res
+            .status(201)
+            .json({ message: "User added", userId: result.insertedId });
         }
 
         // Add user to the database

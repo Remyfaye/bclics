@@ -6,15 +6,17 @@ import { menuEmpty } from "@/constants";
 import Post from "../recommended/post";
 import RecomHeader from "../recommended/header";
 import PlaceHolder from "../layout/PlaceHolder";
+import { useSession } from "next-auth/react";
 
 export default function CategoryDisplay({ color, header, productPage }) {
   const [posts, setPosts] = useState();
   const [products, setProducts] = useState([]);
+  const session = useSession();
 
   useEffect(() => {
     // const products = menuEmpty.filter((item) => item.category === header);
     // setProducts(products);
-    // console.log(products);
+    console.log(session);
 
     const fetchProduct = async () => {
       try {

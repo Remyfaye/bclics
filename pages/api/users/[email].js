@@ -1,3 +1,4 @@
+import { easing } from "@mui/material";
 import clientPromise from "../../../lib/mongodb";
 import { ObjectId } from "mongodb";
 
@@ -6,24 +7,25 @@ export default async function handler(req, res) {
     const client = await clientPromise;
     const db = client.db("eventhub");
 
-    const { id } = req.query;
+    const { email } = req.query;
+    console.log(email);
 
-    if (!ObjectId.isValid(id)) {
-      res.status(400).json({ message: "Invalid ID" });
-      return;
-    }
+    // if (!email) {
+    //   res.status(400).json({ message: "Invalid email" });
+    //   return;
+    // }
 
     switch (req.method) {
       case "GET":
-        const user = await db
-          .collection("users")
-          .findOne({ _id: new ObjectId(id) });
-
+        console.log(`Received email query: ${email}`);
+        const user = await db.collection("users").findOne({ email: email });
+        console.log(`user:${user}`);
         if (!user) {
           res.status(404).json({ message: "User not found" });
           return;
         }
 
+        console.log(`Database query result: ${user}`);
         res.status(200).json(user);
         break;
       default:

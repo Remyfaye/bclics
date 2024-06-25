@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     const db = client.db("eventhub");
 
     const { id } = req.query;
-    console.log(id);
+    console.log(`productId:${id}`);
     if (!ObjectId.isValid(id)) {
       res.status(400).json({ message: "Invalid ID" });
       return;

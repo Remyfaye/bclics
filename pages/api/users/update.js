@@ -7,8 +7,8 @@ export default async function handler(req, res) {
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
-  const { userId, data } = req.body;
-  console.log(userId);
+  const { email, data } = req.body;
+  console.log(email);
   const { _id, ...updateData } = data;
 
   //   if (!userId || !data) {
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     const result = await db
       .collection("users") // Assuming your collection name is 'users'
       .findOneAndUpdate(
-        { _id: new ObjectId(userId) }, // Find the user by ID
+        { email: email }, // Find the user by ID
         { $set: updateData }, // Update the user data
         { returnOriginal: false } // Return the updated document
       );

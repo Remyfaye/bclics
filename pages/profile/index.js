@@ -1,5 +1,5 @@
 "use client";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect, useRouter } from "next/navigation";
 import "firebase/compat/storage";
@@ -10,7 +10,7 @@ import { adminItems, menuEmpty } from "@/constants";
 import Link from "next/link";
 import UploadImage from "../../components/layout/UploadImage";
 
-import { Cookies } from "react-cookie";
+import { Cookies, useCookies } from "react-cookie";
 import Post from "@/components/recommended/post";
 
 const Profile = () => {
@@ -36,23 +36,32 @@ const Profile = () => {
 
   const [userProducts, setUserProducts] = useState(null);
   const [error, setError] = useState(false);
+  // const [email, setEmail] = useState(null);
+  const [cookies, setCookie, removeCookie] = useCookies();
 
-  // const userName = session.data?.user.name;
-  // const email = session.data?.user.email;
+  const session = useSession();
+  // const user = session?.data?.user;
+  const email = session?.data?.user.email;
 
   useEffect(() => {
+    // setEmail(session?.data?.user);
+    console.log(session);
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/users/${userId}`);
+        if (session.status === "authenticated") {
+          const response = await fetch(`/api/users/${email}`);
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          return;
+          if (!response.ok) {
+            const errorData = await response.json();
+            return;
+          }
+
+          const data = await response.json();
+          setUser(data);
+          // console.log(data);
+        } else {
+          console.log(session);
         }
-
-        const data = await response.json();
-        setUser(data);
-        // console.log(data);
       } catch (err) {
         console.error("Error fetching user:", err);
         // setError("Error fetching user");
@@ -78,7 +87,7 @@ const Profile = () => {
     fetchUser();
     fetchProduct();
     console.log(userProducts);
-  }, [user]);
+  }, [user, session, email, session.status]);
 
   // const data = {
   //   name: name,
@@ -105,7 +114,7 @@ const Profile = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userId, data }),
+          body: JSON.stringify({ email, data }),
         });
 
         if (!response.ok) {
@@ -138,9 +147,9 @@ const Profile = () => {
   const handleLogOutUser = async (e) => {
     // setIsCreatingUser(true);
 
-    // signOut("google", { callbackUrl: "/" });
+    signOut("google", { callbackUrl: "/" });
     removeCookie("userId");
-    // toast("you have been logged out");
+    toast("you have been logged out");
   };
 
   return (
@@ -150,15 +159,15 @@ const Profile = () => {
 
         <div className="text-black">
           {/* logout */}
-          <div className="flex-row justify-end">
-            {/* <Image
+          <div className="flex-row justify-end bg-red-300">
+            <Image
               onClick={handleLogOutUser}
-              width={30}
-              height={30}
-              className="h-8 w-8"
-              src="/logout.png"
+              width={200}
+              height={200}
+              className="absolute top-[6rem] right-5 h-8 w-8"
+              src="/icons/logout.png"
               alt=""
-            /> */}
+            />
           </div>
 
           {/* userDetails */}

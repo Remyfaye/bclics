@@ -104,7 +104,7 @@ export default function Navbar() {
                   className="my-auto  cursor-pointer"
                   onClick={() => router.push("/profile")}
                 >
-                  HI, {user?.email}
+                  HI, {user?.name || user?.email}
                 </h3>
               </div>
             ) : (
