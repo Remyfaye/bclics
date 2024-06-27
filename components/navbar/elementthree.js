@@ -105,7 +105,7 @@ export default function Elementthree() {
               )}
             </div>
 
-            {user && (
+            {session.status === "authenticated" && (
               <div className="mt-5  text-red-500 text-xl my-2">
                 <CableIcon />
                 <a href="/upload" className="ml-2">
