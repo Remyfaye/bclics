@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import PlaceIcon from "@mui/icons-material/Place";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function Post({
   allProducts,
@@ -15,6 +17,38 @@ export default function Post({
   vendor,
   vendorPage,
 }) {
+  const session = useSession();
+  const email = session?.data?.user.email;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // setEmail(session?.data?.user);
+    console.log(session);
+    const fetchUser = async () => {
+      try {
+        if (session.status === "authenticated") {
+          const response = await fetch(`/api/getVendor/${vendor}`);
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            return;
+          }
+
+          const data = await response.json();
+          setUser(data);
+          // console.log(data);
+        } else {
+          console.log(session);
+        }
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        // setError("Error fetching user");
+      }
+    };
+
+    fetchUser();
+    console.log(user);
+  }, [user, session, email, session.status]);
   return (
     <>
       <div
@@ -23,7 +57,7 @@ export default function Post({
             ? "border-black/20 mt-3 rounded-xl border-[1px] "
             : profile
             ? " border-black/20  rounded-xl border-[1px] "
-            : "carousel-item  mx-1 flex flex-col w-[160px] md:w-[200px] p-2"
+            : "carousel-item  mx-1 flex flex-col w-[200px] md:w-[200px] p-2"
         }
       >
         <img
@@ -57,7 +91,7 @@ export default function Post({
             </div>
 
             {/* title */}
-            <span className="capitalize font-[500] justify-center  line-clamp-2">
+            <span className="capitalize font-[500] justify-center  line-clamp-1">
               <a href={`/product/${id}`}> {title}</a>
 
               {!title && <h1>product name</h1>}
@@ -66,7 +100,7 @@ export default function Post({
 
           <small className="line-clamp-1 my-3">
             {" "}
-            <a href={`/profile/${vendor}`}>{vendor}</a>
+            <a href={`/profile/${vendor}`}>by: {user?.name}</a>
             {!vendor && <h1>vendor</h1>}
           </small>
 

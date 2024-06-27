@@ -16,11 +16,13 @@ import { CheckBox } from "@mui/icons-material";
 
 const Upload = () => {
   const router = useRouter();
-  const session = useSession();
   // console.log(session.data);
   // const vendor = session.data?.user.email;
   const cookie = new Cookies();
+
+  const session = useSession();
   const email = session?.data?.user.email;
+  const [user, setUser] = useState(null);
 
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
@@ -33,7 +35,6 @@ const Upload = () => {
   const [isChosingImage, setIsChosingImage] = useState(false);
   const [featured, setFeatured] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [user, setUser] = useState(null);
   const [id, setId] = useState("");
   const [message, setMessage] = useState("");
 
