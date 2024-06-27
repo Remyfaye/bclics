@@ -66,6 +66,10 @@ export default function Post({
             {/* <Image src="/bookmark.png" width={18} height={15} /> */}
             {location}
           </h3>
+          <small className="line-clamp-1">
+            {" "}
+            <a href={`/profile/${vendor}`}>{vendor}</a>
+          </small>
         </div>
 
         {/* {allProducts && (
