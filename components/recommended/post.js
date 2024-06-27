@@ -13,6 +13,7 @@ export default function Post({
   location,
   profile,
   vendor,
+  vendorPage,
 }) {
   return (
     <>
@@ -71,12 +72,6 @@ export default function Post({
             <a href={`/profile/${vendor}`}>{vendor}</a>
           </small>
         </div>
-
-        {/* {allProducts && (
-          <button className="bg-primary text-sm  lg:mt-4 rounded-[3px] lg:mb-1 flex justify-center mt-5 text-white mb-5 px-4 py-2 w-2xl mx-auto">
-            Save This Item
-          </button>
-        )} */}
       </div>
     </>
   );

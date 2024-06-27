@@ -1,7 +1,6 @@
 "use client";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { redirect, useRouter } from "next/navigation";
 import "firebase/compat/storage";
 import { useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
@@ -12,24 +11,17 @@ import UploadImage from "../../components/layout/UploadImage";
 
 import { Cookies, useCookies } from "react-cookie";
 import Post from "@/components/recommended/post";
+import { useRouter } from "next/router";
 
 const Profile = () => {
   const router = useRouter();
+  console.log(router.query);
 
   const cookie = new Cookies();
   const userId = cookie.get("userId");
 
   const [user, setUser] = useState(null);
-  const [image, setImage] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
 
-  const [address, setAddress] = useState("");
-
-  const [isChosingImage, setIsChosingImage] = useState(false);
-  const [disabled, setDisabled] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const [showUploadBtn, setShowUploadBtn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState("posts");
   const [chosenState, setChosenState] = useState("posts");
@@ -38,6 +30,7 @@ const Profile = () => {
   const [error, setError] = useState(false);
   // const [email, setEmail] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies();
+  const [id, setId] = useState(null);
 
   const session = useSession();
   // const user = session?.data?.user;
@@ -48,19 +41,15 @@ const Profile = () => {
     console.log(session);
     const fetchUser = async () => {
       try {
-        if (session.status === "authenticated") {
-          const response = await fetch(`/api/users/${email}`);
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            return;
-          }
-
+        if (router.isReady) {
+          setId(router.query.id);
+          const response = await fetch(`/api/getVendor/${id}`);
           const data = await response.json();
+          console.log(data);
           setUser(data);
-          // console.log(data);
+          setLoading(false);
         } else {
-          console.log(session);
+          setLoading(true);
         }
       } catch (err) {
         console.error("Error fetching user:", err);
@@ -74,7 +63,7 @@ const Profile = () => {
       // console.log(userProducts);
       // userProducts.vendor === userId && setUserProducts(data);
       if (data.length > 0) {
-        const products = data.filter((item) => item.vendor === userId);
+        const products = data.filter((item) => item.vendor === id);
         setUserProducts(products);
       }
 
@@ -88,12 +77,6 @@ const Profile = () => {
     fetchProduct();
     console.log(userProducts);
   }, [user, session, email, session.status]);
-
-  // const data = {
-  //   name: name,
-  //   phone: phone,
-  //   address: address,
-  // };
 
   const handleLogOutUser = async (e) => {
     // setIsCreatingUser(true);
@@ -109,18 +92,6 @@ const Profile = () => {
         {/* userPosts */}
 
         <div className="text-black">
-          {/* logout */}
-          <div className="flex-row justify-end bg-red-300">
-            <Image
-              onClick={handleLogOutUser}
-              width={200}
-              height={200}
-              className="absolute top-[6rem] right-5 h-8 w-8"
-              src="/icons/logout.png"
-              alt=""
-            />
-          </div>
-
           {/* userDetails */}
           <div className="flex flex-col justify-center mx-auto  items-center pt-20 ">
             <div className="border flex-row justify-center items-center rounded-lg h-[80px] w-[80px] bg-gray-300">
@@ -161,27 +132,7 @@ const Profile = () => {
       </section>
 
       <section className="mb-5  gap-10 justify-center">
-        {/* admin items */}
-        <div className="px-5 overflow-x-auto custom-scrollbar cursor-pointer flex mx-auto  gap-3  p-5 capitalize lg:mx-auto justify-center mb-5">
-          {adminItems.map((item) => (
-            <>
-              <div
-                // href={item.route}
-                onClick={() => (
-                  setActive(item.label), setChosenState(item.label)
-                )}
-                className={
-                  active === item.label
-                    ? "bg-primary lg:px-5 px-3 py-2 rounded-xl text-white"
-                    : "px-2 py-2 lg:px-5 rounded-xl border text-black"
-                }
-              >
-                {item.label}{" "}
-              </div>
-            </>
-          ))}
-        </div>
-
+        {/* <h1>Products </h1> */}
         {chosenState === "posts" && (
           <>
             <div className="grid p-5 w-full  -mt-10 lg:grid-cols-3 grid-cols-2 gap-3 max-w-4xl  mx-auto">
@@ -196,7 +147,6 @@ const Profile = () => {
                       id={post._id}
                       category={post.category}
                       location={post.location}
-                      profile
                     />
                   </>
                 ))}

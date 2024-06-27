@@ -74,7 +74,7 @@ const Profile = () => {
       // console.log(userProducts);
       // userProducts.vendor === userId && setUserProducts(data);
       if (data.length > 0) {
-        const products = data.filter((item) => item.vendor === userId);
+        const products = data.filter((item) => item.vendor === user?._id);
         setUserProducts(products);
       }
 
