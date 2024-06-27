@@ -98,7 +98,7 @@ const Register = () => {
 
         <div className="pt-5">
           <button
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", { callbackUrl: "/" })}
             className="bg-primary text-white border px-4 border-black py-3 rounded-2xl font-bold mt-2 flex items-center gap-2 justify-center"
           >
             <Image src="/google-nobg.png" alt="img" width={32} height={32} />
