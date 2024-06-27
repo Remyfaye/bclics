@@ -58,19 +58,24 @@ export default function Post({
 
             {/* title */}
             <span className="capitalize font-[500] justify-center  line-clamp-2">
-              <a href={`/product/${id}`}>{title}</a>
+              <a href={`/product/${id}`}> {title}</a>
+
+              {!title && <h1>product name</h1>}
             </span>
           </div>
+
+          <small className="line-clamp-1 my-3">
+            {" "}
+            <a href={`/profile/${vendor}`}>{vendor}</a>
+            {!vendor && <h1>vendor</h1>}
+          </small>
 
           <h3 className="capitalize text-sm items-center text-gray-600 my-3 flex gap-1">
             <PlaceIcon className="text-sm" />
             {/* <Image src="/bookmark.png" width={18} height={15} /> */}
             {location}
+            {!location && <h1>location</h1>}
           </h3>
-          <small className="line-clamp-1">
-            {" "}
-            <a href={`/profile/${vendor}`}>{vendor}</a>
-          </small>
         </div>
       </div>
     </>
