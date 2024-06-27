@@ -57,7 +57,7 @@ export default function Post({
             ? "border-black/20 mt-3 rounded-xl border-[1px] "
             : profile
             ? " border-black/20  rounded-xl border-[1px] "
-            : "carousel-item  mx-1 flex flex-col w-[200px] md:w-[200px] p-2"
+            : "carousel-item border-black/10  rounded-xl border-[1px] mx-1 flex flex-col w-[200px] md:w-[200px] p-2"
         }
       >
         <img
@@ -100,8 +100,11 @@ export default function Post({
 
           <small className="line-clamp-1 my-3">
             {" "}
-            <a href={`/profile/${vendor}`}>by: {user?.name}</a>
-            {!vendor && <h1>vendor</h1>}
+            {!vendor ? (
+              <h1>vendor</h1>
+            ) : (
+              <a href={`/profile/${vendor}`}>by: {user?.name}</a>
+            )}
           </small>
 
           <h3 className="capitalize text-sm items-center text-gray-600 my-3 flex gap-1">
