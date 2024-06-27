@@ -57,7 +57,7 @@ export default function Post({
             ? "border-black/20 mt-3 rounded-xl border-[1px] "
             : profile
             ? " border-black/20  rounded-xl border-[1px] "
-            : "carousel-item border-black/10  rounded-xl border-[1px] mx-1 flex flex-col w-[200px] md:w-[200px] p-2"
+            : "carousel-item  rounded-xl  mx-1 flex flex-col w-[150px] md:w-[200px] p-2"
         }
       >
         <img
@@ -107,12 +107,12 @@ export default function Post({
             )}
           </small>
 
-          <h3 className="capitalize text-sm items-center text-gray-600 my-3 flex gap-1">
+          <small className="capitalize text-sm items-center text-gray-600 my-3 flex gap-1">
             <PlaceIcon className="text-sm" />
             {/* <Image src="/bookmark.png" width={18} height={15} /> */}
-            {location}
-            {!location && <h1>location</h1>}
-          </h3>
+
+            {!location ? <h1>location</h1> : location}
+          </small>
         </div>
       </div>
     </>
