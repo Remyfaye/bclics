@@ -109,7 +109,7 @@ export default function Navbar() {
               </div>
             ) : (
               <Link
-                href="/login"
+                href="/register"
                 // onClick={signIn}
                 className=" text-primary  border px-4 py-2 rounded-lg hover:text-white hover:bg-primary border-primary "
               >
