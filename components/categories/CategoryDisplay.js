@@ -64,6 +64,8 @@ export default function CategoryDisplay({ color, header, productPage }) {
                   price={post.price}
                   id={post._id}
                   category={post.category}
+                  vendor={post.vendor}
+                  location={post.location}
                 />
               ))
             : menuEmpty.map((item) => <PlaceHolder />)}

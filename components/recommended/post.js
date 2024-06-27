@@ -12,6 +12,7 @@ export default function Post({
   id,
   location,
   profile,
+  vendor,
 }) {
   return (
     <>
@@ -21,7 +22,7 @@ export default function Post({
             ? "border-black/20 mt-3 rounded-xl border-[1px] "
             : profile
             ? " border-black/20  rounded-xl border-[1px] "
-            : "carousel-item flex flex-col w-[120px] md:w-[200px] p-2"
+            : "carousel-item  mx-1 flex flex-col w-[160px] md:w-[200px] p-2"
         }
       >
         <img
@@ -31,7 +32,7 @@ export default function Post({
               ? " w-[100%] rounded-t-xl mb-4 lg:h-[145px] h-[230px]  object-cover"
               : `${
                   profile && "mx-o h-[130px] object-cover"
-                }"mx-1  w-[100%] h-[100px] md:h-[150px] rounded-lg object-cover"`
+                }"mx-1  w-[100%] h-[150px] md:h-[150px] rounded-lg object-cover"`
           }
           alt={title}
         />
