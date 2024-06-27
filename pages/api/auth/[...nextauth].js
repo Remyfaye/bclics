@@ -40,9 +40,9 @@ export const authOptions = {
 
   secret: process.env.SECRET,
 
-  pages: {
-    signIn: "/auth/signin",
-  },
+  // pages: {
+  //   signIn: "/auth/signin",
+  // },
 
   // callbacks: {
   //   async session({ session, token, user }) {
