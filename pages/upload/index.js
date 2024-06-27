@@ -20,12 +20,11 @@ const Upload = () => {
   // console.log(session.data);
   // const vendor = session.data?.user.email;
   const cookie = new Cookies();
-  const vendor = cookie.get("userId");
+  const email = session?.data?.user.email;
 
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [extraprice, setExtraPrice] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [contact, setContact] = useState("");
@@ -34,33 +33,38 @@ const Upload = () => {
   const [isChosingImage, setIsChosingImage] = useState(false);
   const [featured, setFeatured] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [sizes, setSizes] = useState([]);
+  const [user, setUser] = useState(null);
   const [id, setId] = useState("");
   const [message, setMessage] = useState("");
 
-  // useEffect(() => {
-  //   if (!vendor) return;
+  useEffect(() => {
+    // setEmail(session?.data?.user);
+    console.log(session);
+    const fetchUser = async () => {
+      try {
+        if (session.status === "authenticated") {
+          const response = await fetch(`/api/users/${email}`);
 
-  //   const fetchUser = async () => {
-  //     try {
-  //       const response = await fetch(`/api/users/${vendor}`);
+          if (!response.ok) {
+            const errorData = await response.json();
+            return;
+          }
 
-  //       if (!response.ok) {
-  //         const errorData = await response.json();
-  //         return;
-  //       }
+          const data = await response.json();
+          setUser(data);
+          // console.log(data);
+        } else {
+          console.log(session);
+        }
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        // setError("Error fetching user");
+      }
+    };
 
-  //       const data = await response.json();
-  //       setUser(data);
-  //       // console.log(data);
-  //     } catch (err) {
-  //       console.error("Error fetching user:", err);
-  //       setError("Error fetching user");
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, []);
+    fetchUser();
+    console.log(user);
+  }, [user, session, email, session.status]);
 
   const data = {
     name: name,
@@ -70,7 +74,7 @@ const Upload = () => {
     image: image,
     category: category,
     contact: contact,
-    vendor: vendor,
+    vendor: user?._id,
     featured: featured,
   };
 
@@ -147,6 +151,7 @@ const Upload = () => {
 
   return (
     <section className="pt-10">
+      {/* <h1 className="pt-20">welcome {user?.name}</h1> */}
       <div className="lg:flex mb-10  mt-[4rem]  gap-10 justify-center">
         <UploadImage
           image={image}
