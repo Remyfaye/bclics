@@ -27,11 +27,13 @@ import SidebarMenuItem from "./SidebarMenuItem";
 import Link from "next/link";
 import { Cookies } from "react-cookie";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Leftside({ allProducts }) {
   const [user, setUser] = useState(null);
   const cookie = new Cookies();
   const userId = cookie.get("userId");
+  const session = useSession();
 
   useEffect(() => {
     if (!userId) return;
@@ -66,7 +68,7 @@ export default function Leftside({ allProducts }) {
       }
     >
       <div className="items-start bg-white p-2 h-[95%] rounded-xl shadow-2xl mb-5">
-        {user && (
+        {session.status === "authenticated" && (
           <div className="mt-5  text-red-500 text-xl my-2">
             <CableIcon />
             <a href="/upload" className="ml-2">

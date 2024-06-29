@@ -24,13 +24,13 @@ const Upload = () => {
   const email = session?.data?.user.email;
   const [user, setUser] = useState(null);
 
-  const [image, setImage] = useState("");
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [contact, setContact] = useState("");
-  const [category, setCategory] = useState("");
+  const [image, setImage] = useState(null);
+  const [name, setName] = useState(null);
+  const [price, setPrice] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [contact, setContact] = useState(null);
+  const [category, setCategory] = useState(null);
   const [disabled, setDisabled] = useState(false);
   const [isChosingImage, setIsChosingImage] = useState(false);
   const [featured, setFeatured] = useState(false);
@@ -83,8 +83,16 @@ const Upload = () => {
     setIsChosingImage(true);
     console.log(data);
     const createPromise = new Promise(async (resolve, reject) => {
-      if (category === "") {
-        alert("please choose a category");
+      if (
+        !name ||
+        !price ||
+        !description ||
+        !location ||
+        !category ||
+        !user?._id
+      ) {
+        alert("please input all fields");
+        setIsChosingImage(false);
       } else {
         try {
           const response = await fetch("/api/product/route", {
@@ -160,6 +168,7 @@ const Upload = () => {
           setDisabled={setDisabled}
           setIsChosingImage={setIsChosingImage}
           menu
+          isChosingImage={isChosingImage}
           disabled={disabled}
         />
         {/* form */}

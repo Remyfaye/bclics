@@ -57,7 +57,7 @@ export default function Post({
             ? "border-black/20 mt-3 rounded-xl border-[1px] "
             : profile
             ? " border-black/20  rounded-xl border-[1px] "
-            : "carousel-item  rounded-xl  mx-1 flex flex-col w-[150px] md:w-[200px] p-2"
+            : "carousel-item mx-2  border-black/20   border-[1px] rounded-xl  my-5 flex flex-col w-[150px] md:w-[200px] "
         }
       >
         <img
@@ -72,13 +72,11 @@ export default function Post({
           alt={title}
         />
 
-        <div className="px-3">
+        <div className="p-1">
           <div className="hover:underline ">
             <div className="flex items-center justify-between">
               {/* price */}
-              <h2 className="text-md mb-2 mt-2 text-cyan-400">
-                &#8358; {price}
-              </h2>
+              <h2 className="text-md  text-cyan-400">&#8358; {price}</h2>
 
               {/* edit btn */}
               {profile && (
@@ -91,28 +89,30 @@ export default function Post({
             </div>
 
             {/* title */}
-            <span className="capitalize font-[500] justify-center  line-clamp-1">
+            <span className="capitalize my-1 font-[500] justify-center  line-clamp-1">
               <a href={`/product/${id}`}> {title}</a>
 
               {!title && <h1>product name</h1>}
             </span>
           </div>
 
-          <small className="line-clamp-1 my-3">
+          <small className="line-clamp-1 ">
             {" "}
             {!vendor ? (
               <h1>vendor</h1>
             ) : (
-              <a href={`/profile/${vendor}`}>by: {user?.name}</a>
+              <a href={`/profile/${vendor}`}>
+                by: {user ? "loading..." : user?.name}
+              </a>
             )}
           </small>
 
-          <small className="capitalize text-sm items-center text-gray-600 my-3 flex gap-1">
+          {/* <small className="capitalize text-sm items-center text-gray-600 my-3 flex gap-1">
             <PlaceIcon className="text-sm" />
-            {/* <Image src="/bookmark.png" width={18} height={15} /> */}
+            <Image src="/bookmark.png" width={18} height={15} />
 
             {!location ? <h1>location</h1> : location}
-          </small>
+          </small> */}
         </div>
       </div>
     </>

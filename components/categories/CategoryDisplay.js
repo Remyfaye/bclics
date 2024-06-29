@@ -52,7 +52,7 @@ export default function CategoryDisplay({ color, header, productPage }) {
           className={
             productPage
               ? "carousel lg:pr-3 lg:grid grid-cols-5 carousel-center w-full shadow-lg"
-              : "carousel lg:pr-3 lg:grid grid-cols-6 carousel-center w-full shadow-lg"
+              : "carousel lg:pr-3  carousel-center w-full shadow-lg"
           }
         >
           {products.length > 0

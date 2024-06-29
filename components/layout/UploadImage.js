@@ -26,10 +26,11 @@ const UploadImage = ({
   setDisabled,
   setIsChosingImage,
   disabled,
+  isChosingImage,
 }) => {
   const handleFileChange = async (e) => {
     setDisabled(true);
-    // setIsChosingImage(true);
+    setIsChosingImage(true);
 
     const selectedFile = e.target.files[0];
     try {
@@ -43,6 +44,7 @@ const UploadImage = ({
             setImage(downloadUrl);
             alert("image selected");
             setDisabled(false);
+            setIsChosingImage(false);
           });
         });
 
@@ -66,7 +68,7 @@ const UploadImage = ({
     <div>
       <div
         className={`${
-          disabled ? "bg-gray-800 " : "bg-gray-300 "
+          isChosingImage ? "bg-gray-800 " : "bg-gray-300 "
         } w-[20rem] mx-auto lg:mx-0 flex mb-3 lg:flex flex-col items-center rounded-xl  lg:w-[12rem] h-[8rem]`}
       >
         {image ? (

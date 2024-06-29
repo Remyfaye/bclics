@@ -10,6 +10,7 @@ import { Cookies } from "react-cookie";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import ConfirmDelete from "@/components/layout/ConfirmDelete";
+import { useSession } from "next-auth/react";
 
 export const Delete = () => {
   alert("here");
@@ -37,6 +38,7 @@ const page = () => {
   const [header, setHeader] = useState("");
   const [loading, setLoading] = useState(false);
   const [deleteItem, setDeleteItem] = useState(false);
+  const session = useSession();
 
   useEffect(() => {
     // console.log(router.isReady);
@@ -68,7 +70,7 @@ const page = () => {
 
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/users/${userId}`);
+        const response = await fetch(`/api/users/${session.data.user.email}`);
 
         if (!response.ok) {
           const errorData = await response.json();
