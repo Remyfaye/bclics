@@ -76,7 +76,7 @@ export default function Post({
           <div className="hover:underline ">
             <div className="flex items-center justify-between">
               {/* price */}
-              <h2 className="text-md  text-cyan-400">&#8358; {price}</h2>
+              <h2 className="text-sm  text-cyan-400">&#8358; {price}</h2>
 
               {/* edit btn */}
               {profile && (
@@ -89,14 +89,14 @@ export default function Post({
             </div>
 
             {/* title */}
-            <span className="capitalize my-1 font-[500] justify-center  line-clamp-1">
+            <span className="capitalize text-sm my-1 font-[500] justify-center  line-clamp-1">
               <a href={`/product/${id}`}> {title}</a>
 
               {!title && <h1>product name</h1>}
             </span>
           </div>
 
-          <small className="line-clamp-1 ">
+          <small className="line-clamp-1 text-black/50">
             {" "}
             {!vendor ? (
               <h1>vendor</h1>

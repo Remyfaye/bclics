@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import CategoryDisplay from "@/components/categories/CategoryDisplay";
 import Saved from "@/components/saved/Saved";
 import Leftside from "@/components/header/leftside";
+import SouthIcon from "@mui/icons-material/South";
 
 export const Delete = () => {
   alert("here");
@@ -172,7 +173,7 @@ const Page = () => {
                 onClick={addToSaved}
                 className=" bg-primary text-center cursor-pointer rounded-[7px] text-white lg:px-4 px-3 py-2"
               >
-                Save this item
+                Save this item <SouthIcon fontSize="small" />
               </div>
               {user?._id && product.vendor && user._id === product.vendor && (
                 <button className="cursor-pointer border  text-center my-5 w-full rounded-[7px] text-black lg:px-4 px-3 py-2">
