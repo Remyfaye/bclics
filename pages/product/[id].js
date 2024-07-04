@@ -172,7 +172,7 @@ const Page = () => {
                 onClick={addToSaved}
                 className=" bg-primary text-center cursor-pointer rounded-[7px] text-white lg:px-4 px-3 py-2"
               >
-                Save This Item
+                Save this item
               </div>
               {user?._id && product.vendor && user._id === product.vendor && (
                 <button className="cursor-pointer border  text-center my-5 w-full rounded-[7px] text-black lg:px-4 px-3 py-2">
