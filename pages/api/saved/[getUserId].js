@@ -1,4 +1,4 @@
-import clientPromise from "../../lib/mongodb";
+import clientPromise from "@/lib/mongodb";
 
 export default async function handler(req, res) {
   try {
@@ -7,10 +7,11 @@ export default async function handler(req, res) {
 
     switch (req.method) {
       case "POST":
-        const { userId, itemId, quantity } = req.body;
+        const { product, userId } = req.body;
+        console.log(product);
 
         // Ensure userId, itemId, and quantity are provided
-        if (!userId || !itemId || !quantity) {
+        if (!product) {
           res
             .status(400)
             .json({ message: "userId, itemId, and quantity are required" });
@@ -23,20 +24,21 @@ export default async function handler(req, res) {
           // Update existing cart
           await db
             .collection("carts")
-            .updateOne({ userId }, { $push: { items: { itemId, quantity } } });
+            .updateOne({ userId }, { $push: { items: { product } } });
         } else {
           // Create new cart
           await db.collection("carts").insertOne({
             userId,
-            items: [{ itemId, quantity }],
+            product,
           });
         }
 
-        res.status(201).json({ message: "Item added to cart" });
+        res.status(201).json({ message: "Item added to cart", cart });
         break;
 
       case "GET":
-        const { userId: getUserId } = req.query;
+        const { getUserId } = req.query;
+        console.log(`Database cart id: ${getUserId}`);
 
         if (!getUserId) {
           res.status(400).json({ message: "userId is required" });
@@ -52,7 +54,8 @@ export default async function handler(req, res) {
           return;
         }
 
-        res.status(200).json({ cart: userCart });
+        // console.log(userCart);
+        res.status(200).json(userCart);
         break;
 
       case "DELETE":

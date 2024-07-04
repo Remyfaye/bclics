@@ -3,13 +3,13 @@ import Link from "next/link";
 
 export default function Shoppingcart({ items }) {
   return (
-    <Link href="/cart">
+    <a href="/cart">
       <span>
         <ShoppingCartIcon className="h-12" />
         <span className=" badge badge-warning text-white mr-5 bg-primary">
           {items}
         </span>
       </span>
-    </Link>
+    </a>
   );
 }

@@ -16,7 +16,7 @@ export default function CategoryDisplay({ color, header, productPage }) {
   useEffect(() => {
     // const products = menuEmpty.filter((item) => item.category === header);
     // setProducts(products);
-    console.log(session);
+    // console.log(session);
 
     const fetchProduct = async () => {
       try {

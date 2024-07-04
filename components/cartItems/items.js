@@ -6,18 +6,18 @@ import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function Items({ item, index, removeItem }) {
+export default function Items({ name, item, index, removeItem }) {
   return (
     <div
       className="flex space-x-5 p-3"
       style={{ borderBottom: "2px solid #ededed" }}
     >
-      <img className="w-[150px] h-[150px]" src={item.url} alt={item.title} />
+      <img className="w-[150px] h-[150px]" src={item.image} alt={item.title} />
 
       <div>
-        <span className="text-sm line-clamp-2">
+        <span className="text-sm line-clamp-2 text-black">
           <Link href={`/product/${item.id}`} className="hover:underline">
-            {item.title}
+            {name}
           </Link>
         </span>
 
@@ -30,11 +30,11 @@ export default function Items({ item, index, removeItem }) {
         </p>
 
         <p>
-          {!item.deliveryPrice ? (
+          {!item.price ? (
             <span className="text-green-800 text-sm">Free Delivery</span>
           ) : (
             <span className="text-gray-500 text-sm">
-              + shipping from {NGnaira.format(item.deliveryPrice)}
+              {NGnaira.format(item.price)}
             </span>
           )}
         </p>
@@ -48,7 +48,7 @@ export default function Items({ item, index, removeItem }) {
       </div>
 
       <div className="hidden md:inline">
-        <b className="text-xl">{NGnaira.format(item.productprice)}</b>
+        <b className="text-xl">{NGnaira.format(item.price)}</b>
       </div>
     </div>
   );

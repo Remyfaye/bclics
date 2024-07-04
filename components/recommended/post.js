@@ -23,20 +23,20 @@ export default function Post({
 
   useEffect(() => {
     // setEmail(session?.data?.user);
-    console.log(session);
+    // console.log(session);
     const fetchUser = async () => {
       try {
         if (session.status === "authenticated") {
-          const response = await fetch(`/api/getVendor/${vendor}`);
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            return;
+          if (vendor !== undefined) {
+            const response = await fetch(`/api/getVendor/${vendor}`);
+            if (!response.ok) {
+              const errorData = await response.json();
+              return;
+            }
+            const data = await response.json();
+            setUser(data);
+            // console.log(data);
           }
-
-          const data = await response.json();
-          setUser(data);
-          // console.log(data);
         } else {
           console.log(session);
         }
@@ -47,8 +47,8 @@ export default function Post({
     };
 
     fetchUser();
-    console.log(user);
-  }, [user, session, email, session.status]);
+    // console.log(user);
+  }, [user, session, email, session.status, vendor]);
   return (
     <>
       <div

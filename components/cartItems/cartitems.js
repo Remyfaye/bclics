@@ -10,9 +10,8 @@ import { Modal } from "@mui/material";
 import Message from "./message";
 
 export default function CartItems() {
-  const { data: session } = useSession();
   // React Recoil
-  const [cart, setCart] = useRecoilState(cartState);
+  const [cart, setCart] = useState();
   const [cartSum, setCartSum] = useState();
   const [loading, setLoading] = useState(false);
   const [deliverySum, setDeliverySum] = useState();
@@ -24,15 +23,52 @@ export default function CartItems() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const session = useSession();
+  const googleUser = session?.data?.user;
+  const email = googleUser?.email;
+  const [user, setUser] = useState(null);
+  const getUserId = user?._id;
+
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`/api/users/${email}`);
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          return;
+        }
+
+        const data = await response.json();
+        setUser(data);
+        // console.log(user);
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        setError("Error fetching user");
+      }
+    };
+
+    const getCart = async () => {
+      try {
+        const response = await fetch(`/api/saved/${getUserId}`);
+        const data = await response.json();
+        setCart(data.items);
+        console.log(cart);
+      } catch (error) {
+        console.error("Error saving item:", error);
+      }
+    };
+    getCart();
+    fetchUser();
+
     var Sum = 0;
-    for (var i = 0; i < cart.length; i++) {
+    for (var i = 0; i < cart?.length; i++) {
       Sum += parseInt(cart[i].productprice);
     }
     setCartSum(Sum);
 
     var Summ = 0;
-    for (var i = 0; i < cart.length; i++) {
+    for (var i = 0; i < cart?.length; i++) {
       Summ += parseInt(cart[i].deliveryPrice);
     }
     setDeliverySum(Summ);
@@ -77,15 +113,16 @@ export default function CartItems() {
 
   return (
     <div className="p-3 md:flex md:space-x-5">
-      <div className="bg-white shadow-lg p-3 rounded-t-lg text-xl text-black uppercase w-[100%] md:w-[65%]">
-        <span>Cart ({cart.length})</span>
+      <div className="bg-white pt-32 shadow-lg p-3 rounded-t-lg text-xl text-black uppercase w-[100%] md:w-[65%]">
+        <span>Cart ({cart?.length})</span>
         <div className="divider"></div>
-        {cart.length === 0 && <div className="capitalize">Cart is Empty</div>}
-        {cart.map((item, index) => (
+        {cart?.length === 0 && <div className="capitalize">Cart is Empty</div>}
+        {cart?.map((item) => (
           <Items
-            key={item.id + Math.random()}
-            item={item}
-            index={index}
+            key={item._id + Math.random()}
+            item={item.product}
+            name={item.product.name}
+            // index={i}
             removeItem={removeItem}
           />
         ))}
@@ -109,7 +146,7 @@ export default function CartItems() {
           <div className="mt-3">
             <input
               type="text"
-              value={session?.user.name}
+              value={session?.user?.name}
               placeholder="Name"
               disabled
               className="input input-bordered input-warning w-full"

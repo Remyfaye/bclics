@@ -18,21 +18,21 @@ export default function Navbar() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const cookie = new Cookies();
-  const userId = cookie.get("userId");
 
-  const { data: session } = useSession();
+  const session = useSession();
+  const googleUser = session?.data?.user;
+  const email = googleUser?.email;
   const [query, setQuery] = useState("");
-  const [searchedProducts, setSearchedProducts] = useState([]);
+  const [cart, setCart] = useState();
   // React Recoil
-  const [cart, setCart] = useRecoilState(cartState);
   const [user, setUser] = useState(null);
+  const userId = user?._id;
+  const getUserId = user?._id;
 
   useEffect(() => {
-    if (!userId) return;
-
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/users/${userId}`);
+        const response = await fetch(`/api/users/${email}`);
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -41,15 +41,26 @@ export default function Navbar() {
 
         const data = await response.json();
         setUser(data);
-        // console.log(data);
+        // console.log(user);
       } catch (err) {
         console.error("Error fetching user:", err);
-        setError("Error fetching user");
+      }
+    };
+
+    const getCart = async () => {
+      try {
+        const response = await fetch(`/api/saved/${getUserId}`);
+        const data = await response.json();
+        setCart(data);
+        console.log(cart.items);
+      } catch (error) {
+        console.error("Error saving item:", error);
       }
     };
 
     fetchUser();
-  }, []);
+    getCart();
+  }, [cart, user, email]);
 
   const onSearch = () => {
     const delayBounceFn = setTimeout(() => {
@@ -98,7 +109,7 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:inline">
-            {user !== null ? (
+            {session.status === "authenticated" ? (
               <div>
                 <h3
                   className="my-auto  cursor-pointer"
@@ -121,10 +132,10 @@ export default function Navbar() {
           <div className="flex gap-2 items-center lg:hidden">
             <Search />
 
-            <ShoppingCart items={cart.length} />
+            <ShoppingCart items={cart?.items?.length} />
           </div>
           <div className="hidden lg:flex">
-            <ShoppingCart items={cart.length} />
+            <ShoppingCart items={cart?.items?.length} />
           </div>
         </div>
       </div>

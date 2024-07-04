@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const db = client.db("eventhub");
 
     const { email } = req.query;
-    console.log(email);
+    // console.log(email);
 
     // if (!email) {
     //   res.status(400).json({ message: "Invalid email" });
@@ -17,15 +17,15 @@ export default async function handler(req, res) {
 
     switch (req.method) {
       case "GET":
-        console.log(`Received email query: ${email}`);
+        // console.log(`Received email query: ${email}`);
         const user = await db.collection("users").findOne({ email: email });
-        console.log(`user:${user}`);
+        // console.log(`user:${user}`);
         if (!user) {
           res.status(404).json({ message: "User not found" });
           return;
         }
 
-        console.log(`Database query result: ${user}`);
+        // console.log(`Database query result: ${user}`);
         res.status(200).json(user);
         break;
       default:
